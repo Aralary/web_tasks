@@ -1,0 +1,34 @@
+<div class="row answer mt-5">
+    <div class="col-2">
+        <img src="/static/img/duck.jpg" class="picture" alt="">
+        <div class="row" style="align-items: center;">
+            <div class="col-4">100</div>
+            <div class="col-4">
+                <button class="navbar-toggler like">like</button>
+                <button class="navbar-toggler dislike">dislike</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-10">
+        <h4>{{question.title}}</h4>
+        <p>Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum
+            является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий
+            безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum
+            для распечатки образцов. {{question.text}} </p>
+        <div class="row">
+            <div class="col-3" style="text-align: center;">
+                <a href="">answers(N)</a>
+            </div>
+            <div class="col-1">Tags:</div>
+            <div class="col-2">
+                <a href="">{{question.tag1}}</a>
+            </div>
+            <div class="col-2">
+                <a href="">{{question.tag2}}</a>
+            </div>
+            <div class="col-2">
+                <a href="">{{question.tag3}}</a>
+            </div>
+        </div>
+    </div>
+</div>
