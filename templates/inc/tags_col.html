@@ -1,17 +1,29 @@
 <div class="col-3">
-    <h2 class="mt-5">Tags</h2>
-    <div class="row">
-        <a href="">
-            <div class="tag">first tag</div>
-        </a>
-        <a href="">
-            <div class="tag">second tag</div>
-        </a>
-        <a href="">
-            <div class="tag">third tag</div>
-        </a>
-        <a href="">
-            <div class="tag">others tag</div>
-        </a>
+    <div class="col-3">
+        <h2 class="mt-5">Tags</h2>
+        <div class="row">
+            {% for tag in tags %}
+            <a href="{% url 'tag_questions' ix=tag.id %}">
+                <div class="tag">{{tag.title}}</div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-3">
+        <h2 class="mt-5">Best members</h2>
+        <div class="row">
+            <a href="">
+                <div class="tag">Aralary</div>
+            </a>
+            <a href="">
+                <div class="tag">Shaurma007</div>
+            </a>
+            <a href="">
+                <div class="tag">Asshackov</div>
+            </a>
+            <a href="">
+                <div class="tag">Metr</div>
+            </a>
+        </div>
     </div>
 </div>

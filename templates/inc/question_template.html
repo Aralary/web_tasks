@@ -16,16 +16,20 @@
             <div class="col-3" style="text-align: center;">
                 <a href="">answers(N)</a>
             </div>
+
+
             <div class="col-1">Tags:</div>
+            {% for tag in tags %}
             <div class="col-2">
-                <a href="">def1 {{question.tag1}}</a>
+                <a href="{% url 'tag_questions' ix=tag.id %}"> {{tag.title}}</a>
             </div>
-            <div class="col-2">
-                <a href="">def2{{question.tag2}}</a>
-            </div>
-            <div class="col-2">
-                <a href="">def3{{question.tag3}}</a>
-            </div>
+            {% endfor %}
+<!--            <div class="col-2">-->
+<!--                <a href="">def2 {{question.tag2}}</a>-->
+<!--            </div>-->
+<!--            <div class="col-2">-->
+<!--                <a href="">def3 {{question.tag3}}</a>-->
+<!--            </div>-->
         </div>
     </div>
 </div>
