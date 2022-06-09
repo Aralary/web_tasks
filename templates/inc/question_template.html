@@ -2,7 +2,10 @@
     <div class="col-2">
         <img src="/static/img/duck.jpg" class="picture" alt="">
         <div class="row" style="align-items: center;">
-            <div class="col-4">100</div>
+            <div class="col-4">
+                <div class="navbar-toggler" style="height: 40px;margin-left: -10px">{100}</div>
+                <div class="navbar-toggler" style="margin-left: -10px">{50}</div>
+            </div>
             <div class="col-4">
                 <button class="navbar-toggler like">like</button>
                 <button class="navbar-toggler dislike">dislike</button>
@@ -24,12 +27,12 @@
                 <a href="{% url 'tag_questions' ix=tag.id %}"> {{tag.title}}</a>
             </div>
             {% endfor %}
-<!--            <div class="col-2">-->
-<!--                <a href="">def2 {{question.tag2}}</a>-->
-<!--            </div>-->
-<!--            <div class="col-2">-->
-<!--                <a href="">def3 {{question.tag3}}</a>-->
-<!--            </div>-->
+            <!--            <div class="col-2">-->
+            <!--                <a href="">def2 {{question.tag2}}</a>-->
+            <!--            </div>-->
+            <!--            <div class="col-2">-->
+            <!--                <a href="">def3 {{question.tag3}}</a>-->
+            <!--            </div>-->
         </div>
     </div>
 </div>
