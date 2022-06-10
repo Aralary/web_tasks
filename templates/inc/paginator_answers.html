@@ -1,0 +1,27 @@
+<div class="row" style="margin: 20px; font-size: 150%;">
+    <div class="pagination">
+    <span class="step-links">
+        {% if answers.has_previous %}
+        <button class="btn btn-outline-success" type="submit">
+            <a href="?page=1">&laquo; first</a>
+        </button>
+        <button class="btn btn-outline-success" type="submit">
+            <a href="?page={{ answers.previous_page_number }}"> previous </a>
+        </button>
+        {% endif %}
+
+        <span class="current">
+            Page {{ answers.number }} of {{ answers.paginator.num_pages }}.
+        </span>
+
+        {% if answers.has_next %}
+        <button class="btn btn-outline-success" type="submit">
+            <a href="?page={{ answers.next_page_number }}"> next </a>
+        </button>
+        <button class="btn btn-outline-success" type="submit">
+            <a href="?page={{ answers.paginator.num_pages }}"> last &raquo;</a>
+        </button>
+        {% endif %}
+    </span>
+    </div>
+</div>
