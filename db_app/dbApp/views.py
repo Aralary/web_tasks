@@ -50,7 +50,7 @@ def login(request):
 
 def tag_questions(request, ix: str):
     questions = Question.objects.all()
-    tag_questions = [que for que in questions if [tag for tag in que.tags if tag.name == ix]]
+    tag_questions = [que for que in questions if [tag for tag in que.tags.all() if tag.name == ix]]
 
     tags = Tag.objects.all()
     paginator = Paginator(tag_questions, 3)
