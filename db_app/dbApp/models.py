@@ -37,6 +37,11 @@ class Question(models.Model):
         return f"{self.name}"
 
 
+def t_questions(_tag: str):
+    questions = Question.objects.all()
+    return [que for que in questions if [tag for tag in que.tags.all() if tag.name == _tag]]
+
+
 
 class QuestionInstance(models.Model):
     question = models.ForeignKey(Question, models.CASCADE)
