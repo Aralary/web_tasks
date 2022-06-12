@@ -1,0 +1,22 @@
+<div class="col-3">
+    <div class="col-3">
+        <h2 class="mt-5">Tags</h2>
+        <div class="row">
+            {% for tag in tags %}
+            <a href="{% url 'tag_questions' ix=tag.name %}">
+                <div class="tag">{{tag.name}}</div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-3">
+        <h2 class="mt-5">Best members</h2>
+        <div class="row">
+            {% for member in b_members %}
+            <a href="">
+                <div class="tag">{{member.user.username}}</div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
