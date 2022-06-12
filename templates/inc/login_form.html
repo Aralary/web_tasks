@@ -1,28 +1,30 @@
 <div class="col-9 mt-5">
-    <form>
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <div class="col-5">
+        <form>
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
 
-        <div class="form-floating">
-            <input type="email" class="form-control  login" id="floatingInput"
-                   placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
-        </div>
-        <div class="form-floating">
-            <input type="password" class="form-control login" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
-        </div>
-
-        <div class="checkbox mb-3" style="margin: 7px;">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <div>
-            <button class="btn btn-lg btn-primary login" type="submit">Sign in</button>
-        </div>
-        <div>
-            <button class="btn btn-lg btn-primary login" type="submit">Register</button>
-        </div>
-        <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
-    </form>
+            <div class="checkbox mb-3" style="margin: 7px;">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <div>
+                <button class="btn btn-lg btn-primary login" type="submit">Sign in</button>
+            </div>
+            <div>
+                <button class="btn btn-lg btn-primary login" type="submit">Register</button>
+            </div>
+            <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
+        </form>
+    </div>
 </div>
+
