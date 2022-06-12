@@ -1,3 +1,5 @@
+import resource
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -45,11 +47,24 @@ def t_questions(_tag: str):
 
 
 def get_some_tags():
-    tags = Tag.objects.all()
     questions = Question.objects.all()
     q = [que for que in questions if que.likes > 900]
-    # res = list(tags)[count:(count+10)]
     return q[0].tags.all()
+
+
+def get_best_members():
+    answers = Answer.objects.all()
+    temp_res = [ans for ans in answers if ans.likes > 900]
+    res = set()
+    for i in range(5):
+        res.add(temp_res[i].author)
+    return res
+
+
+def get_good_questions():
+    questions = Question.objects.all()
+    q = [que for que in questions if que.likes > 900]
+    return q
 
 class QuestionInstance(models.Model):
     question = models.ForeignKey(Question, models.CASCADE)

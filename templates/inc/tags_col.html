@@ -12,18 +12,11 @@
     <div class="col-3">
         <h2 class="mt-5">Best members</h2>
         <div class="row">
+            {% for member in b_members %}
             <a href="">
-                <div class="tag">Aralary</div>
+                <div class="tag">{{member.user.username}}</div>
             </a>
-            <a href="">
-                <div class="tag">Shaurma007</div>
-            </a>
-            <a href="">
-                <div class="tag">Asshackov</div>
-            </a>
-            <a href="">
-                <div class="tag">Metr</div>
-            </a>
+            {% endfor %}
         </div>
     </div>
 </div>

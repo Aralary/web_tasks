@@ -24,7 +24,7 @@ urlpatterns = [
     path('login/', views.login, name="login"),
     path('settings/', views.settings, name="settings"),
     path('signup/', views.signup, name="signup"),
-    path('hot/', views.index, name="hot"),
+    path('hot/', views.hot, name="hot"),
     path('question/<str:ix>/', views.question, name="question_page"),
     path('tag/<str:ix>/', views.tag_questions, name="tag_questions")
 ]
