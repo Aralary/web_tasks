@@ -2,6 +2,7 @@ import string
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login
 from .models import Profile, Answer, Question, Tag, t_questions, get_some_tags, get_best_members, get_good_questions, \
     get_new_questions
 
@@ -69,6 +70,7 @@ def question(request, ix: str):
 
 
 def login(request):
+    print(request.POST)
     tags = get_some_tags()
     b_members = get_best_members()
     return render(request, "login.html", {"tags": tags, "b_members": b_members})
