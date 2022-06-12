@@ -1,9 +1,4 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
-from django.views import generic
 from django import forms
-
 from .models import Question, Answer, Profile, Tag
 
 
@@ -12,8 +7,15 @@ class LoginForm(forms.Form):
     password = forms.CharField()
 
 
-class SignupForm(forms.ModelForm):
+class SignupForm(forms.Form):
+    login = forms.CharField()
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    repeat_password = forms.CharField(widget=forms.PasswordInput)
+    avatar = forms.ImageField()
 
-    class Meta:
-        model = Profile
 
+class QuestionForm(forms.Form):
+    title = forms.CharField()
+    text = forms.CharField(widget=forms.Textarea)
+    tags = forms.CharField()

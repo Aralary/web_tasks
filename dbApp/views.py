@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from .models import Profile, Answer, Question, Tag, t_questions, get_some_tags, get_best_members, get_good_questions, \
     get_new_questions
+from .forms import LoginForm, SignupForm
 
 
 def pagination(request, pages, i: int):
@@ -42,9 +43,11 @@ def new(request):
 
 
 def signup(request):
+    if request.method == "GET":
+        form = SignupForm()
     tags = get_some_tags()
     b_members = get_best_members()
-    return render(request, "signup.html", {"tags": tags, "b_members": b_members})
+    return render(request, "signup.html", {"tags": tags, "b_members": b_members, "form": form})
 
 
 def settings(request):
@@ -70,10 +73,14 @@ def question(request, ix: str):
 
 
 def login(request):
-    print(request.POST)
+
+    if request.method == "GET":
+        form = LoginForm()
+    # elif request.method == "POST":
+
     tags = get_some_tags()
     b_members = get_best_members()
-    return render(request, "login.html", {"tags": tags, "b_members": b_members})
+    return render(request, "login.html", {"tags": tags, "b_members": b_members, "form": form})
 
 
 def tag_questions(request, ix: str):
