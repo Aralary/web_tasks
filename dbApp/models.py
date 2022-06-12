@@ -35,6 +35,7 @@ class Question(models.Model):
     likes = models.IntegerField()
     dislikes = models.IntegerField()
     answers = models.ManyToManyField(Answer)
+    date = models.DateTimeField(auto_now_add=True)
     img = models.ImageField()
 
     def __str__(self):
@@ -65,6 +66,11 @@ def get_good_questions():
     questions = Question.objects.all()
     q = [que for que in questions if que.likes > 900]
     return q
+
+
+def get_new_questions():
+    return Question.objects.all().order_by("-date")
+
 
 class QuestionInstance(models.Model):
     question = models.ForeignKey(Question, models.CASCADE)

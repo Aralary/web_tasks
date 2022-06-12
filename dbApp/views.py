@@ -2,7 +2,8 @@ import string
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render
-from .models import Profile, Answer, Question, Tag, t_questions, get_some_tags, get_best_members, get_good_questions
+from .models import Profile, Answer, Question, Tag, t_questions, get_some_tags, get_best_members, get_good_questions, \
+    get_new_questions
 
 
 def pagination(request, pages, i: int):
@@ -17,7 +18,8 @@ def index(request):
     tags = get_some_tags()
     questions = pagination(request, questions, 3)
     b_members = get_best_members()
-    return render(request, "index.html", {"questions": questions, "tags": tags, "b_members": b_members, "page_name": "Questions"})
+    return render(request, "index.html",
+                  {"questions": questions, "tags": tags, "b_members": b_members, "page_name": "Questions"})
 
 
 def hot(request):
@@ -25,7 +27,17 @@ def hot(request):
     tags = get_some_tags()
     questions = pagination(request, questions, 3)
     b_members = get_best_members()
-    return render(request, "index.html", {"questions": questions, "tags": tags, "b_members": b_members, "page_name": "Hot questions"})
+    return render(request, "index.html",
+                  {"questions": questions, "tags": tags, "b_members": b_members, "page_name": "Hot questions"})
+
+
+def new(request):
+    questions = get_new_questions()
+    tags = get_some_tags()
+    questions = pagination(request, questions, 3)
+    b_members = get_best_members()
+    return render(request, "index.html",
+                  {"questions": questions, "tags": tags, "b_members": b_members, "page_name": "New questions"})
 
 
 def signup(request):
