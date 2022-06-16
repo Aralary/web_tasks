@@ -1,0 +1,89 @@
+main > .container {
+  padding: 60px 15px 0;
+}
+.question{
+  border: 3px solid gray;
+  border-radius: 5px;
+  margin: 20px;
+  padding: 10px;
+}
+
+.t_area{
+resize: none;
+height: 200px;
+margin: 20px;
+width: 925px;
+border-radius: 5px
+}
+.answer{
+  margin: 20px;
+  padding: 10px;
+}
+
+.picture{
+  width: 140px;
+  height: 140px;
+}
+.logo_header{
+width: 30px;
+height: 30px;
+margin: 3px
+}
+.login{
+    color: white;
+    width: 120px;
+    margin: 6px;
+}
+.logout_b{
+width: 80px;
+margin: 3px;
+padding: 0px;
+}
+
+.search_f{
+height: 35px;
+margin: 25px;
+}
+
+
+.like{
+border-color: green;
+width: 80px;
+margin: 5px;
+}
+.dislike{
+border-color: red;
+width: 80px;
+margin: 5px;
+}
+
+.tag{
+font-size: 150%;
+color: blue;
+}
+
+.new_question_input{
+    margin: 8px;
+    width: 740px;
+}
+.new_question_t_area{
+    margin: 8px;
+width: 740px;
+height: 200px;
+resize: none;
+}
+
+.login{
+    width: 400px;
+    height: 50px;
+}
+
+.reg_field{
+    margin: 8px;
+    width: 400px;
+}
+
+.reg_tag{
+font-size: 130%;
+margin: 6px;
+}
