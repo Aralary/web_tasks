@@ -14,7 +14,7 @@
 
 # открылась консоль питоновская
 
-# пишем from dbApp.models import Question, Tag, Profile, Answer
+# пишем: from dbApp.models import Question, Tag, Profile, Answer
 
 # так же импортируем файлик с функцией заполнения бдшки:
 
