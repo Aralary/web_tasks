@@ -1,0 +1,26 @@
+{% load static %}
+{% if request.user.is_authenticated %}
+<div class="col-2">
+    <div class="row">
+        <div class="col-3">
+            <img src="{% static request.user.profile.img %}" class="logo_header" alt="">
+        </div>
+        <div class="col-5">
+            <div class="login" title="your_login">{{request.user}}</div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: -20px">
+        <div class="col-5">
+            <a href="{% url 'settings' %}">settings</a>
+        </div>
+        <div class="col-5">
+            <a href="{% url 'logout' %}">logout</a>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="row" style="margin: 8px;">
+    <a style="width: 64px;" href="{% url 'login' %}">log in</a>
+    <a style="width: 64px;" href="{% url 'signup' %}">register</a>
+</div>
+{% endif %}
