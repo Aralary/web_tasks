@@ -18,10 +18,10 @@ from django.urls import path
 from dbApp import views
 
 urlpatterns = [
+    path('login/', views.login, name="login"),
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
     path('ask/', views.ask, name="ask"),
-    path('login/', views.login, name="login"),
     path('settings/', views.settings, name="settings"),
     path('signup/', views.signup, name="signup"),
     path('hot/', views.hot, name="hot"),

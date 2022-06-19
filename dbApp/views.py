@@ -1,15 +1,17 @@
-import string
-
+from django.contrib import auth
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect, Http404, reverse
+from django.contrib.auth.models import User
+from django import forms
+from django.contrib.auth.decorators import login_required
+
 from .models import Profile, Answer, Question, Tag, t_questions, get_some_tags, get_best_members, get_good_questions, \
     get_new_questions
 from .forms import LoginForm, SignupForm
 
 
 def pagination(request, pages, i: int):
-    paginator = Paginator(pages, 3)
+    paginator = Paginator(pages, i)
     page = request.GET.get('page')
     pages = paginator.get_page(page)
     return pages
@@ -73,14 +75,20 @@ def question(request, ix: str):
 
 
 def login(request):
-
+    print(request.POST)
     if request.method == "GET":
         form = LoginForm()
-    # elif request.method == "POST":
+    elif request.method == "POST":
+        user_form = LoginForm(data=request.POST)
+        # print(user_form)
+        if user_form.is_valid():
+            user = auth.authenticate(request, **user_form.cleaned_data)
+            # print(user)
+            if user:
+                return redirect(reverse("index"))
 
-    tags = get_some_tags()
-    b_members = get_best_members()
-    return render(request, "login.html", {"tags": tags, "b_members": b_members, "form": form})
+    return render(request, "login.html",
+                  {"tags": get_some_tags(), "b_members": get_best_members(), "form": LoginForm()})
 
 
 def tag_questions(request, ix: str):
