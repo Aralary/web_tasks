@@ -1,43 +1,16 @@
 {% extends "./inc/base.html" %}
-
-{% block header_links %}
-{% include "./inc/h_left_2.html" %}
-{% endblock header_links %}
-
-{% block header_place %}
-{% include "./inc/h_right_2.html" %}
-{% endblock header_place %}
+{% load bootstrap4 %}
 
 <!-- Begin page content -->
 {% block content_side %}
+
 <div class="col-9">
     <h2 class="mt-5">New question</h2>
-    <div class="row answer">
-        <div class="col-2">
-            <div style="font-size: 170%;">Title</div>
-        </div>
-        <div class="col-10">
-            <input class="new_question_input" type="text" placeholder="Title of your question">
-        </div>
-    </div>
-    <div class="row answer">
-        <div class="col-2">
-            <div style="font-size: 170%;">Text</div>
-        </div>
-        <div class="col-10">
-                        <textarea class="new_question_t_area" placeholder="Enter your question text"
-                                  aria-label="Enter your answer here"></textarea>
-        </div>
-    </div>
-    <div class="row answer">
-        <div class="col-2">
-            <div style="font-size: 170%;">Tags</div>
-        </div>
-        <div class="col-10">
-            <input class="new_question_input" type="text" placeholder="Tags of your question">
-            <h5 style="margin: 8px; color: red;">Incorrect format of data</h5>
-            <button class="btn btn-outline-success" style="margin: 8px;" type="submit">Ask</button>
-        </div>
-    </div>
+    <form action="{% url 'ask' %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button class="btn btn-outline-success" style="margin: 8px;" type="submit">Ask</button>
+    </form>
 </div>
+
 {% endblock content_side %}

@@ -1,13 +1,5 @@
 {% extends "./inc/base.html" %}
-
-{% block header_links %}
-{% include "./inc/h_left_2.html" %}
-{% endblock header_links %}
-
-{% block header_place %}
-{% include "./inc/h_right_2.html" %}
-{% endblock header_place %}
-<!-- Begin page content -->
+{% load bootstrap4 %}
 
 {% block content_side %}
 <div class="col-9">
@@ -23,9 +15,11 @@
     {% include "./inc/paginator_answers.html" %}
     <hr>
 
-    <textarea class="t_area" placeholder="Enter your answer here"
-              aria-label="Enter your answer here"></textarea>
-    <button class="btn btn-outline-success" style="margin: 20px;" type="submit">Answer</button>
+    <form action="{% url 'question_page' ix=question.name %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button class="btn btn-outline-success" style="margin: 20px;" type="submit">Answer</button>
+    </form>
 </div>
 {% endblock content_side %}
 

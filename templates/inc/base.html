@@ -73,14 +73,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    {% block header_links %}
-                    {% endblock header_links %}
+                    {% include "./h_left.html" %}
                 </ul>
                 <form class="d-flex">
                     <input class="form-control me-2 search_f" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success search_f" type="submit">Search</button>
-                    {% block header_place %}
-                    {% endblock header_place %}
+                    {% include "./h_right.html" %}
                 </form>
             </div>
         </div>

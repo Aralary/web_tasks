@@ -4,10 +4,12 @@ from django.shortcuts import render, redirect, Http404, reverse
 from django.contrib.auth.models import User
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.urls import resolve
+import datetime
 
 from .models import Profile, Answer, Question, Tag, t_questions, get_some_tags, get_best_members, get_good_questions, \
     get_new_questions
-from .forms import LoginForm, SignupForm
+from .forms import LoginForm, SignupForm, QuestionForm, AnswerForm
 
 
 def pagination(request, pages, i: int):
@@ -18,6 +20,7 @@ def pagination(request, pages, i: int):
 
 
 def index(request):
+    request.session['continue'] = reverse('index')
     questions = Question.objects.all()
     tags = get_some_tags()
     questions = pagination(request, questions, 3)
@@ -47,6 +50,8 @@ def new(request):
 def signup(request):
     if request.method == "GET":
         form = SignupForm()
+    else:
+        form = SignupForm(data=request.POST)
     tags = get_some_tags()
     b_members = get_best_members()
     return render(request, "signup.html", {"tags": tags, "b_members": b_members, "form": form})
@@ -59,36 +64,82 @@ def settings(request):
 
 
 def ask(request):
-    tags = get_some_tags()
-    b_members = get_best_members()
-    return render(request, "ask.html", {"tags": tags, "b_members": b_members})
+    if request.method == "GET":
+        form = QuestionForm()
+    else:
+        form = QuestionForm(data=request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['name']
+            qs = Question.objects.filter(name=title)
+            if not qs:
+                q = Question.objects.create(
+                    name=title,
+                    text=form.cleaned_data['text'],
+                    author=request.user.profile,
+                    likes=0,
+                    dislikes=0,
+                    date=datetime.datetime.now(),
+                    img="static/" + str(request.user.profile.img)
+                )
+                q.tags.set(form.cleaned_data['tags'])
+                q.save()
+                return redirect(reverse('new'))
+            else:
+                form.add_error(None, 'This question is already exist')
+        else:
+            form.add_error(None, 'Incorrect data')
+    return render(request, "ask.html", {"tags": get_some_tags(), "b_members": get_best_members(), 'form': form})
 
 
 def question(request, ix: str):
     q = Question.objects.filter(name=ix)
+
+    if request.method == "GET":
+        form = AnswerForm()
+
+    else:
+        form = AnswerForm(data=request.POST)
+        if request.user.is_authenticated:
+            if form.is_valid():
+                ans = Answer.objects.create(
+                    text=form.cleaned_data['text'],
+                    author=request.user.profile,
+                    likes=0,
+                    dislikes=0,
+                    img="static/" + str(request.user.profile.img)
+                )
+                q[0].answers.add(ans)
+                form = AnswerForm()
+            else:
+                form.add_error(None, 'Incorrect data')
+        else:
+            form.add_error(None, 'You must be authorized to answer the question')
+
     answers = q[0].answers.all()
     tags = get_some_tags()
     answers = pagination(request, answers, 3)
     b_members = get_best_members()
     return render(request, "question.html",
-                  {"question": q[0], "answers": answers, "tags": tags, "b_members": b_members})
+                  {"question": q[0], "answers": answers, "tags": tags, "b_members": b_members, 'form': form})
 
 
 def login(request):
-    print(request.POST)
     if request.method == "GET":
         form = LoginForm()
-    elif request.method == "POST":
-        user_form = LoginForm(data=request.POST)
+    else:
+        form = LoginForm(data=request.POST)
         # print(user_form)
-        if user_form.is_valid():
-            user = auth.authenticate(request, **user_form.cleaned_data)
+        if form.is_valid():
+            user = auth.authenticate(request, **form.cleaned_data)
             # print(user)
-            if user:
-                return redirect(reverse("index"))
-
+            if user is not None:
+                auth.login(request, user)
+                next = request.session.pop('continue', 'index')
+                return redirect(next)
+            else:
+                form.add_error(None, 'Incorrect login or password')
     return render(request, "login.html",
-                  {"tags": get_some_tags(), "b_members": get_best_members(), "form": LoginForm()})
+                  {"tags": get_some_tags(), "b_members": get_best_members(), "form": form})
 
 
 def tag_questions(request, ix: str):
@@ -98,3 +149,9 @@ def tag_questions(request, ix: str):
     b_members = get_best_members()
     return render(request, "tag_questions.html",
                   {"tags": tags, "tag": ix, "questions": tag_questions, "b_members": b_members})
+
+
+def logout(request):
+    next = request.session.pop('continue', resolve(request.path_info).url_name)
+    auth.logout(request)
+    return redirect(next)

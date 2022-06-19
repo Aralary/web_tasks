@@ -15,7 +15,13 @@ class SignupForm(forms.Form):
     avatar = forms.ImageField()
 
 
-class QuestionForm(forms.Form):
-    title = forms.CharField()
-    text = forms.CharField(widget=forms.Textarea)
-    tags = forms.CharField()
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['name', 'text', 'tags']
+
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['text']

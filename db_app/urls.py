@@ -19,6 +19,7 @@ from dbApp import views
 
 urlpatterns = [
     path('login/', views.login, name="login"),
+    path('logout/', views.logout, name="logout"),
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
     path('ask/', views.ask, name="ask"),
