@@ -6,10 +6,10 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 from django.urls import resolve
 import datetime
-
+import math
 from .models import Profile, Answer, Question, Tag, t_questions, get_some_tags, get_best_members, get_good_questions, \
     get_new_questions
-from .forms import LoginForm, SignupForm, QuestionForm, AnswerForm
+from .forms import LoginForm, SignupForm, QuestionForm, AnswerForm, SettingsForm
 
 
 def pagination(request, pages, i: int):
@@ -52,15 +52,55 @@ def signup(request):
         form = SignupForm()
     else:
         form = SignupForm(data=request.POST)
-    tags = get_some_tags()
-    b_members = get_best_members()
-    return render(request, "signup.html", {"tags": tags, "b_members": b_members, "form": form})
+        p1 = request.POST['password']
+        p2 = request.POST['repeat_password']
+        print(p1)
+        if p1 != p2:
+            form.add_error(None, 'Passwords are not the same')
+        else:
+            print(p1)
+            user = User.objects.create(
+                username=request.POST['login'],
+                first_name=request.POST['first_name'],
+                email=request.POST['email'],
+            )
+            user.set_password(p1)
+            print(user.username)
+            print(user.password)
+            if not Profile.objects.filter(user=user):
+                profile = Profile.objects.create(
+                    user=user,
+                    img=request.POST['avatar']
+                )
+                profile.user.save()
+                profile.save()
+                return redirect(reverse('login'))
+            else:
+                form.add_error(None, 'Profile with this login is already exist')
+    return render(request, "signup.html", {"tags": get_some_tags(), "b_members": get_best_members(), "form": form})
 
 
 def settings(request):
-    tags = get_some_tags()
-    b_members = get_best_members()
-    return render(request, "settings.html", {"tags": tags, "b_members": b_members})
+    if request.method == "GET":
+        form = SettingsForm()
+    else:
+        form = SignupForm(data=request.POST)
+        p1 = request.POST['password']
+        p2 = request.POST['repeat_password']
+        if p1 != p2:
+            form.add_error(None, 'Passwords are not the same')
+        else:
+            profile = Profile.objects.get(user=request.user)
+            profile.img = request.POST['avatar']
+            profile.user.email = request.POST['email']
+            profile.user.first_name = request.POST['first_name']
+            profile.user.set_password(str(p1))
+            profile.user.save()
+            profile.save()
+            auth.login(request, profile.user)
+
+            return redirect(reverse('settings'))
+    return render(request, "settings.html", {"tags": get_some_tags(), "b_members": get_best_members(), "form": form})
 
 
 def ask(request):
@@ -93,7 +133,11 @@ def ask(request):
 
 def question(request, ix: str):
     q = Question.objects.filter(name=ix)
-
+    answers = q[0].answers.all()
+    tags = get_some_tags()
+    last_page = math.ceil((len(answers) + 1)/3)
+    answers = pagination(request, answers, 3)
+    b_members = get_best_members()
     if request.method == "GET":
         form = AnswerForm()
 
@@ -110,15 +154,12 @@ def question(request, ix: str):
                 )
                 q[0].answers.add(ans)
                 form = AnswerForm()
+                return redirect('/question/' + ix + '?page=%s' % str(last_page))
             else:
                 form.add_error(None, 'Incorrect data')
         else:
             form.add_error(None, 'You must be authorized to answer the question')
 
-    answers = q[0].answers.all()
-    tags = get_some_tags()
-    answers = pagination(request, answers, 3)
-    b_members = get_best_members()
     return render(request, "question.html",
                   {"question": q[0], "answers": answers, "tags": tags, "b_members": b_members, 'form': form})
 

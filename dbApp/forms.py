@@ -8,6 +8,7 @@ class LoginForm(forms.Form):
 
 
 class SignupForm(forms.Form):
+    first_name = forms.CharField()
     login = forms.CharField()
     email = forms.EmailField(widget=forms.EmailInput)
     password = forms.CharField(widget=forms.PasswordInput)
@@ -25,3 +26,14 @@ class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         fields = ['text']
+
+
+class SettingsForm(forms.Form):
+    first_name = forms.CharField()
+    email = forms.EmailField(widget=forms.EmailInput)
+    password = forms.CharField(widget=forms.PasswordInput())
+    repeat_password = forms.CharField(widget=forms.PasswordInput())
+    avatar = forms.ImageField()
+
+
+
