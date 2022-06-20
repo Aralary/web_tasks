@@ -21,30 +21,30 @@ def pagination(request, pages, i: int):
 
 def index(request):
     request.session['continue'] = reverse('index')
+
     questions = Question.objects.all()
-    tags = get_some_tags()
     questions = pagination(request, questions, 3)
-    b_members = get_best_members()
     return render(request, "index.html",
-                  {"questions": questions, "tags": tags, "b_members": b_members, "page_name": "Questions"})
+                  {"questions": questions, "tags": get_some_tags(), "b_members": get_best_members(),
+                   "page_name": "Questions"})
 
 
 def hot(request):
+    request.session['continue'] = reverse('hot')
     questions = get_good_questions()
-    tags = get_some_tags()
     questions = pagination(request, questions, 3)
-    b_members = get_best_members()
     return render(request, "index.html",
-                  {"questions": questions, "tags": tags, "b_members": b_members, "page_name": "Hot questions"})
+                  {"questions": questions, "tags": get_some_tags(), "b_members": get_best_members(),
+                   "page_name": "Hot questions"})
 
 
 def new(request):
+    request.session['continue'] = reverse('new')
     questions = get_new_questions()
-    tags = get_some_tags()
     questions = pagination(request, questions, 3)
-    b_members = get_best_members()
     return render(request, "index.html",
-                  {"questions": questions, "tags": tags, "b_members": b_members, "page_name": "New questions"})
+                  {"questions": questions, "tags": get_some_tags(), "b_members": get_best_members(),
+                   "page_name": "New questions"})
 
 
 def signup(request):
@@ -80,6 +80,7 @@ def signup(request):
     return render(request, "signup.html", {"tags": get_some_tags(), "b_members": get_best_members(), "form": form})
 
 
+@login_required
 def settings(request):
     if request.method == "GET":
         form = SettingsForm()
@@ -98,11 +99,12 @@ def settings(request):
             profile.user.save()
             profile.save()
             auth.login(request, profile.user)
-
-            return redirect(reverse('settings'))
+            next = request.session.pop('continue', reverse('settings'))
+            return redirect(next)
     return render(request, "settings.html", {"tags": get_some_tags(), "b_members": get_best_members(), "form": form})
 
 
+@login_required
 def ask(request):
     if request.method == "GET":
         form = QuestionForm()
@@ -123,7 +125,8 @@ def ask(request):
                 )
                 q.tags.set(form.cleaned_data['tags'])
                 q.save()
-                return redirect(reverse('new'))
+                next = request.session.pop('continue', reverse('new'))
+                return redirect(next)
             else:
                 form.add_error(None, 'This question is already exist')
         else:
@@ -133,9 +136,10 @@ def ask(request):
 
 def question(request, ix: str):
     q = Question.objects.filter(name=ix)
+    request.session['continue'] = reverse('question_page', args=[ix])
     answers = q[0].answers.all()
     tags = get_some_tags()
-    last_page = math.ceil((len(answers) + 1)/3)
+    last_page = math.ceil((len(answers) + 1) / 3)
     answers = pagination(request, answers, 3)
     b_members = get_best_members()
     if request.method == "GET":
@@ -154,7 +158,7 @@ def question(request, ix: str):
                 )
                 q[0].answers.add(ans)
                 form = AnswerForm()
-                return redirect('/question/' + ix + '?page=%s' % str(last_page))
+                return redirect(reverse('question_page', args=[ix]) + '?page=%s' % str(last_page))
             else:
                 form.add_error(None, 'Incorrect data')
         else:
@@ -184,15 +188,14 @@ def login(request):
 
 
 def tag_questions(request, ix: str):
+    request.session['continue'] = reverse('tag_questions', args=[ix])
     tag_questions = t_questions(ix)
-    tags = get_some_tags()
     tag_questions = pagination(request, tag_questions, 3)
-    b_members = get_best_members()
     return render(request, "tag_questions.html",
-                  {"tags": tags, "tag": ix, "questions": tag_questions, "b_members": b_members})
+                  {"tags": get_some_tags(), "tag": ix, "questions": tag_questions, "b_members": get_best_members()})
 
 
 def logout(request):
-    next = request.session.pop('continue', resolve(request.path_info).url_name)
+    next = request.session.pop('continue', 'xxx')
     auth.logout(request)
     return redirect(next)
